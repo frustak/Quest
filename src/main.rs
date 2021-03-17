@@ -1,3 +1,4 @@
+mod file_handler;
 mod widget;
 
 use crossterm::{
@@ -5,6 +6,7 @@ use crossterm::{
     execute,
     terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
 };
+use file_handler::{load_quests, save_quests};
 use quest::{App, CrossTerminal, DynResult, InputMode, Quest, TerminalFrame};
 use std::{error::Error, io::stdout};
 use tui::{backend::CrosstermBackend, layout::Rect, Terminal};
@@ -31,7 +33,8 @@ fn initialize_terminal() -> Result<CrossTerminal, Box<dyn Error>> {
 
 /// Draw user interface to terminal
 fn draw_ui(terminal: &mut CrossTerminal) -> DynResult {
-    let mut app = App::default();
+    let quests = load_quests()?;
+    let mut app = App::new(&quests);
 
     while !app.should_exit {
         terminal.draw(|f| {
@@ -43,6 +46,7 @@ fn draw_ui(terminal: &mut CrossTerminal) -> DynResult {
         }
     }
 
+    save_quests(&app.quests)?;
     Ok(())
 }
 
