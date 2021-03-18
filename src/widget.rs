@@ -49,21 +49,25 @@ pub fn navigation_hint(input_mode: &InputMode) -> Paragraph {
     let (msg, style) = match input_mode {
         InputMode::Normal => (
             vec![
-                Span::raw("Press "),
                 Span::styled("q", Style::default().add_modifier(Modifier::BOLD)),
-                Span::raw(" to exit, "),
-                Span::styled("e", Style::default().add_modifier(Modifier::BOLD)),
-                Span::raw(" to add new quest."),
+                Span::raw(" exit | "),
+                Span::styled("n", Style::default().add_modifier(Modifier::BOLD)),
+                Span::raw(" new quest | "),
+                Span::styled("Enter", Style::default().add_modifier(Modifier::BOLD)),
+                Span::raw(" check/uncheck quest | "),
+                Span::styled("↑ ↓", Style::default().add_modifier(Modifier::BOLD)),
+                Span::raw(" navigate list | "),
+                Span::styled("Delete", Style::default().add_modifier(Modifier::BOLD)),
+                Span::raw(" delete quest"),
             ],
             Style::default().add_modifier(Modifier::RAPID_BLINK),
         ),
         InputMode::Editing => (
             vec![
-                Span::raw("Press "),
                 Span::styled("Esc", Style::default().add_modifier(Modifier::BOLD)),
-                Span::raw(" to stop editing, "),
+                Span::raw(" stop adding | "),
                 Span::styled("Enter", Style::default().add_modifier(Modifier::BOLD)),
-                Span::raw(" to save the quest."),
+                Span::raw(" save quest"),
             ],
             Style::default(),
         ),

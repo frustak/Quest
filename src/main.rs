@@ -104,7 +104,7 @@ fn handle_events(event: KeyEvent, app: &mut App) {
 /// When user is viewing quests
 fn handle_normal_events(app: &mut App, keycode: KeyCode) {
     match keycode {
-        KeyCode::Char('e') => {
+        KeyCode::Char('n') => {
             app.input_mode = InputMode::Editing;
             app.selected_quest = None;
         }
