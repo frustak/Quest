@@ -36,7 +36,7 @@ impl QuestList {
     }
 }
 
-/// Input field possible states
+/// Possible Input field states
 pub enum InputMode {
     /// Not Editing
     Normal,
