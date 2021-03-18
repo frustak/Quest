@@ -1,11 +1,13 @@
+mod events;
 mod file_handler;
 mod widget;
 
 use crossterm::{
-    event::{read, EnableMouseCapture, Event, KeyCode, KeyEvent},
+    event::{read, EnableMouseCapture, Event},
     execute,
     terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
 };
+use events::handle_events;
 use file_handler::{load_quests, save_quests};
 use quest::{App, CrossTerminal, DynResult, InputMode, Quest, TerminalFrame};
 use std::{error::Error, io::stdout};
@@ -73,7 +75,7 @@ fn app_view(frame: &mut TerminalFrame, app: &App) {
     frame.render_widget(navigation_hint, main_chunks[2]);
 }
 
-/// Set cursor when typing
+/// Handle cursor when typing
 fn handle_input_cursor(app: &App, frame: &mut TerminalFrame, chunks: &[Rect]) {
     match app.input_mode {
         InputMode::Normal =>
@@ -90,77 +92,5 @@ fn handle_input_cursor(app: &App, frame: &mut TerminalFrame, chunks: &[Rect]) {
                 chunks[1].y + 1,
             )
         }
-    }
-}
-
-/// Input events handler
-fn handle_events(event: KeyEvent, app: &mut App) {
-    match app.input_mode {
-        InputMode::Normal => handle_normal_events(app, event.code),
-        InputMode::Editing => handle_editing_events(app, event.code),
-    }
-}
-
-/// When user is viewing quests
-fn handle_normal_events(app: &mut App, keycode: KeyCode) {
-    match keycode {
-        KeyCode::Char('n') => {
-            app.input_mode = InputMode::Editing;
-            app.selected_quest = None;
-        }
-        KeyCode::Char('q') => {
-            app.should_exit = true;
-        }
-        KeyCode::Up => {
-            if let Some(index) = app.selected_quest {
-                if index > 0 {
-                    app.selected_quest = Some(index - 1);
-                }
-            }
-        }
-        KeyCode::Down => {
-            if let Some(index) = app.selected_quest {
-                if index < app.quests.len() - 1 {
-                    app.selected_quest = Some(index + 1);
-                }
-            }
-        }
-        KeyCode::Enter => {
-            if let Some(index) = app.selected_quest {
-                app.quests[index].completed = !app.quests[index].completed;
-            }
-        }
-        KeyCode::Delete => {
-            if let Some(index) = app.selected_quest {
-                app.quests.remove(index);
-                if app.quests.is_empty() {
-                    app.selected_quest = None;
-                } else if app.selected_quest.unwrap() == app.quests.len() {
-                    app.selected_quest = Some(app.quests.len() - 1);
-                }
-            }
-        }
-        _ => {}
-    }
-}
-
-/// When user adding new quest
-fn handle_editing_events(app: &mut App, keycode: KeyCode) {
-    match keycode {
-        KeyCode::Enter if !app.input.trim().is_empty() => {
-            let new_quest = Quest::new(app.input.drain(..).collect());
-            app.quests.push(new_quest);
-        }
-        KeyCode::Char(c) => {
-            app.input.push(c);
-        }
-        KeyCode::Backspace => {
-            app.input.pop();
-        }
-        KeyCode::Esc => {
-            app.input_mode = InputMode::Normal;
-            app.selected_quest = Some(0);
-        }
-        _ => {}
     }
 }
