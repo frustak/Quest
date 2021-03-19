@@ -4,6 +4,9 @@
 - Rust
 - Cargo
 
+### Installation
+- `cargo install quest-tui`
+
 ### Running
 - `cargo run`
 
