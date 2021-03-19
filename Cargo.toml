@@ -9,7 +9,7 @@ homepage = "https://github.com/frustak/Quest"
 repository = "https://github.com/frustak/Quest"
 readme = "README.md"
 keywords = ["cli", "tui", "todo", "quest", "task"]
-categories = "[command-line-utilities]"
+categories = ["command-line-utilities"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
