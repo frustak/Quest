@@ -1,5 +1,5 @@
 use crossterm::event::{KeyCode, KeyEvent};
-use quest::{App, InputMode, Quest};
+use quest_tui::{App, InputMode, Quest};
 
 /// Input events handler
 pub fn handle_events(event: KeyEvent, app: &mut App) {

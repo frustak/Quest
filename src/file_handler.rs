@@ -1,4 +1,4 @@
-use quest::{DynResult, Quest, QuestList};
+use quest_tui::{DynResult, Quest, QuestList};
 use std::{fs, io, path::Path};
 
 /// Saved quests file path

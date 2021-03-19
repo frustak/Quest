@@ -1,5 +1,5 @@
 [package]
-name = "quest"
+name = "quest-tui"
 version = "0.1.0"
 authors = ["frustak <soulburn007@gmail.com>"]
 edition = "2018"

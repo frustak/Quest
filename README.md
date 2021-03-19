@@ -1,4 +1,4 @@
-# Quest - a simple todo terminal user interface
+# Quest-tui - a simple todo list terminal user interface
 
 ### Prerequisites
 - Rust

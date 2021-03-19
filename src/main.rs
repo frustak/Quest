@@ -9,7 +9,7 @@ use crossterm::{
 };
 use events::handle_events;
 use file_handler::{load_quests, save_quests};
-use quest::{App, CrossTerminal, DynResult, InputMode, Quest, TerminalFrame};
+use quest_tui::{App, CrossTerminal, DynResult, InputMode, Quest, TerminalFrame};
 use std::{error::Error, io::stdout};
 use tui::{backend::CrosstermBackend, layout::Rect, Terminal};
 
