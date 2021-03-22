@@ -7,7 +7,11 @@
 ### Installation
 - `cargo install quest-tui`
 
-### Running
+### Usage
+after installing with cargo, you can run the command `quest-tui`
+
+### Building
+- `cargo build`
 - `cargo run`
 
 ![Demo](/images/demo.png)
