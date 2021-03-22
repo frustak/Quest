@@ -3,7 +3,7 @@ mod file_handler;
 mod widget;
 
 use crossterm::{
-    event::{read, EnableMouseCapture, Event},
+    event::{read, Event},
     execute,
     terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
 };
@@ -25,7 +25,7 @@ fn main() -> DynResult {
 fn initialize_terminal() -> Result<CrossTerminal, Box<dyn Error>> {
     enable_raw_mode()?;
     let mut stdout = stdout();
-    execute!(stdout, EnterAlternateScreen, EnableMouseCapture)?;
+    execute!(stdout, EnterAlternateScreen)?;
     let backend = CrosstermBackend::new(stdout);
     let mut terminal = Terminal::new(backend)?;
     terminal.clear()?;
