@@ -1,4 +1,5 @@
-# Quest-tui - a simple todo list terminal user interface
+# Quest-tui
+a simple todo list terminal user interface
 ![Demo](/images/demo.png)
 
 ### Built With
@@ -26,6 +27,12 @@ after installing with cargo, you can run the command `quest-tui`
 Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are greatly appreciated.
 [guide](https://github.com/frustak/Quest/blob/main/CONTRIBUTING.md)
 
+## Authors
+- [frustak](https://github.com/frustak) - *Initial work*
+
+## Acknowledgments
+- [Simon Scatton](https://github.com/SDAChess) - *Help with Github Porject*
+
 ## License
 Distributed under the MIT License. See [LICENSE](https://github.com/frustak/Quest/blob/main/LICENSE) for more information.
 
@@ -43,5 +50,5 @@ Distributed under the MIT License. See [LICENSE](https://github.com/frustak/Ques
 ```
 
 ## Contact
-Discord: frustαk#4859 (preferred)
-Email: soulburn007@gmail.com
+- Discord: frustαk#4859 (preferred)
+- Email: soulburn007@gmail.com
