@@ -1,15 +1,13 @@
-mod events;
-mod file_handler;
-mod widget;
-
 use crossterm::{
     event::{read, Event},
     execute,
     terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
 };
-use events::handle_events;
-use file_handler::{load_quests, save_quests};
-use quest_tui::{App, CrossTerminal, DynResult, InputMode, Quest, TerminalFrame};
+use quest_tui::{
+    events::handle_events,
+    file_handler::{load_configs, load_quests, save_quests},
+    widget, App, CrossTerminal, DynResult, InputMode, TerminalFrame,
+};
 use std::{error::Error, io::stdout};
 use tui::{backend::CrosstermBackend, layout::Rect, Terminal};
 
@@ -36,7 +34,8 @@ fn initialize_terminal() -> Result<CrossTerminal, Box<dyn Error>> {
 /// Draw user interface to terminal
 fn draw_ui(terminal: &mut CrossTerminal) -> DynResult {
     let quests = load_quests()?;
-    let mut app = App::new(&quests);
+    let configs = load_configs()?;
+    let mut app = App::new(&quests, configs);
 
     while !app.should_exit {
         terminal.draw(|f| {
@@ -64,14 +63,14 @@ fn cleanup_terminal(mut terminal: CrossTerminal) -> DynResult {
 fn app_view(frame: &mut TerminalFrame, app: &App) {
     let main_chunks = widget::main_chunks(frame.size());
 
-    let quest_list = widget::quest_list(&app.quests, app.selected_quest);
+    let quest_list = widget::quest_list(app);
     frame.render_widget(quest_list, main_chunks[0]);
 
-    let quest_input = widget::quest_input(&app);
+    let quest_input = widget::quest_input(app);
     frame.render_widget(quest_input, main_chunks[1]);
     handle_input_cursor(&app, frame, &main_chunks);
 
-    let navigation_hint = widget::navigation_hint(&app.input_mode);
+    let navigation_hint = widget::navigation_hint(app);
     frame.render_widget(navigation_hint, main_chunks[2]);
 }
 
@@ -80,7 +79,7 @@ fn handle_input_cursor(app: &App, frame: &mut TerminalFrame, chunks: &[Rect]) {
     match app.input_mode {
         // Hide the cursor. `Frame` does this by default, so we don't need to do anything here
         InputMode::Normal => (),
-        InputMode::Editing => {
+        InputMode::Adding => {
             // Make the cursor visible and ask tui-rs to put it at the specified coordinates after rendering
             frame.set_cursor(
                 // Put cursor past the end of the input text

@@ -1,74 +1,44 @@
+use crate::{actions, App, InputMode};
 use crossterm::event::{KeyCode, KeyEvent};
-use quest_tui::{App, InputMode, Quest};
 
 /// Input events handler
 pub fn handle_events(event: KeyEvent, app: &mut App) {
     match app.input_mode {
         InputMode::Normal => handle_normal_events(app, event.code),
-        InputMode::Editing => handle_editing_events(app, event.code),
+        InputMode::Adding => handle_adding_events(app, event.code),
     }
 }
 
 /// When user is viewing quests
 fn handle_normal_events(app: &mut App, keycode: KeyCode) {
-    match keycode {
-        KeyCode::Char('n') => {
-            app.input_mode = InputMode::Editing;
-            app.selected_quest = None;
-        }
-        KeyCode::Char('q') => {
-            app.should_exit = true;
-        }
-        KeyCode::Up => {
-            if let Some(index) = app.selected_quest {
-                if index > 0 {
-                    app.selected_quest = Some(index - 1);
-                }
-            }
-        }
-        KeyCode::Down => {
-            if let Some(index) = app.selected_quest {
-                if index < app.quests.len() - 1 {
-                    app.selected_quest = Some(index + 1);
-                }
-            }
-        }
-        KeyCode::Enter => {
-            if let Some(index) = app.selected_quest {
-                app.quests[index].completed = !app.quests[index].completed;
-            }
-        }
-        KeyCode::Delete => {
-            if let Some(index) = app.selected_quest {
-                app.quests.remove(index);
-                if app.quests.is_empty() {
-                    app.selected_quest = None;
-                } else if app.selected_quest.unwrap() == app.quests.len() {
-                    app.selected_quest = Some(app.quests.len() - 1);
-                }
-            }
-        }
-        _ => {}
+    let keybindings = &app.configs.keybindings;
+
+    if keycode == keybindings.new_quest {
+        actions::new_quest(app);
+    } else if keycode == keybindings.exit_app {
+        actions::exit_app(app);
+    } else if keycode == keybindings.list_up {
+        actions::list_up(app);
+    } else if keycode == keybindings.list_down {
+        actions::list_down(app);
+    } else if keycode == keybindings.check_and_uncheck_quest {
+        actions::check_and_uncheck_quest(app);
+    } else if keycode == keybindings.delete_quest {
+        actions::delete_quest(app);
     }
 }
 
-/// When user adding new quest
-fn handle_editing_events(app: &mut App, keycode: KeyCode) {
-    match keycode {
-        KeyCode::Enter if !app.input.trim().is_empty() => {
-            let new_quest = Quest::new(app.input.drain(..).collect());
-            app.quests.push(new_quest);
-        }
-        KeyCode::Char(c) => {
-            app.input.push(c);
-        }
-        KeyCode::Backspace => {
-            app.input.pop();
-        }
-        KeyCode::Esc => {
-            app.input_mode = InputMode::Normal;
-            app.selected_quest = Some(0);
-        }
-        _ => {}
+/// When user adding a new quest
+fn handle_adding_events(app: &mut App, keycode: KeyCode) {
+    let keybindings = &app.configs.keybindings;
+
+    if keycode == keybindings.save_quest && !app.input.trim().is_empty() {
+        actions::save_quest(app);
+    } else if keycode == keybindings.exit_adding {
+        actions::exit_adding(app);
+    } else if let KeyCode::Char(c) = keycode {
+        actions::input_add_char(app, c);
+    } else if let KeyCode::Backspace = keycode {
+        actions::input_del_char(app);
     }
 }
