@@ -78,11 +78,8 @@ fn app_view(frame: &mut TerminalFrame, app: &App) {
 /// Handle cursor when typing
 fn handle_input_cursor(app: &App, frame: &mut TerminalFrame, chunks: &[Rect]) {
     match app.input_mode {
-        InputMode::Normal =>
         // Hide the cursor. `Frame` does this by default, so we don't need to do anything here
-        {
-            frame.set_cursor(frame.size().x, frame.size().y)
-        }
+        InputMode::Normal => (),
         InputMode::Editing => {
             // Make the cursor visible and ask tui-rs to put it at the specified coordinates after rendering
             frame.set_cursor(
