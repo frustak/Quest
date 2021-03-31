@@ -6,6 +6,8 @@ use std::{
     fs, io,
     path::{Path, PathBuf},
 };
+
+/// Application data and config files path
 struct ProjPaths {
     data_path: PathBuf,
     config_path: PathBuf,
@@ -26,14 +28,6 @@ lazy_static! {
         }
     };
 }
-/// Save all quests to a file
-pub fn save_quests(quests: &[Quest]) -> DynResult {
-    let quests = &QuestList::new(quests);
-    let stringified_quests = serde_json::to_string(quests)?;
-    fs::write(PROJ_PATHS.data_path.as_path(), stringified_quests)?;
-
-    Ok(())
-}
 
 /// Load all saved quests from file
 pub fn load_quests() -> Result<Vec<Quest>, io::Error> {
@@ -47,10 +41,11 @@ pub fn load_quests() -> Result<Vec<Quest>, io::Error> {
     Ok(quest_list.quests)
 }
 
-/// Save configs to file
-fn save_configs(configs: &Configs) -> DynResult {
-    let stringified_configs = serde_json::to_string_pretty(configs)?;
-    fs::write(PROJ_PATHS.config_path.as_path(), stringified_configs)?;
+/// Save all quests to a file
+pub fn save_quests(quests: &[Quest]) -> DynResult {
+    let quests = &QuestList::new(quests);
+    let stringified_quests = serde_json::to_string(quests)?;
+    fs::write(PROJ_PATHS.data_path.as_path(), stringified_quests)?;
 
     Ok(())
 }
@@ -62,7 +57,15 @@ pub fn load_configs() -> Result<Configs, io::Error> {
     }
 
     let stringified_configs = fs::read_to_string(PROJ_PATHS.config_path.as_path())?;
-    let configs: Configs = serde_json::from_str(&stringified_configs).unwrap_or_default();
+    let configs: Configs = serde_json::from_str(&stringified_configs).unwrap();
 
     Ok(configs)
+}
+
+/// Save configs to file
+fn save_configs(configs: &Configs) -> DynResult {
+    let stringified_configs = serde_json::to_string_pretty(configs)?;
+    fs::write(PROJ_PATHS.config_path.as_path(), stringified_configs)?;
+
+    Ok(())
 }

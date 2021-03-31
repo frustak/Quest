@@ -4,17 +4,23 @@ use crossterm::{
     terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
 };
 use quest_tui::{
-    events::handle_events,
+    events::{handle_events, handle_input_cursor},
     file_handler::{load_configs, load_quests, save_quests},
-    widget, App, CrossTerminal, DynResult, InputMode, TerminalFrame,
+    widget, App, CrossTerminal, DynResult, TerminalFrame,
 };
 use std::{error::Error, io::stdout};
-use tui::{backend::CrosstermBackend, layout::Rect, Terminal};
+use tui::{backend::CrosstermBackend, Terminal};
 
 fn main() -> DynResult {
     let mut terminal = initialize_terminal()?;
-    draw_ui(&mut terminal)?;
+
+    let quests = load_quests()?;
+    let configs = load_configs()?;
+    let mut app = App::new(&quests, configs);
+
+    draw_ui(&mut terminal, &mut app)?;
     cleanup_terminal(terminal)?;
+    save_quests(&app.quests)?;
 
     Ok(())
 }
@@ -32,22 +38,17 @@ fn initialize_terminal() -> Result<CrossTerminal, Box<dyn Error>> {
 }
 
 /// Draw user interface to terminal
-fn draw_ui(terminal: &mut CrossTerminal) -> DynResult {
-    let quests = load_quests()?;
-    let configs = load_configs()?;
-    let mut app = App::new(&quests, configs);
-
+fn draw_ui(terminal: &mut CrossTerminal, app: &mut App) -> DynResult {
     while !app.should_exit {
         terminal.draw(|f| {
-            app_view(f, &app);
+            app_view(f, app);
         })?;
 
         if let Event::Key(event) = read()? {
-            handle_events(event, &mut app);
+            handle_events(event, app);
         }
     }
 
-    save_quests(&app.quests)?;
     Ok(())
 }
 
@@ -59,7 +60,7 @@ fn cleanup_terminal(mut terminal: CrossTerminal) -> DynResult {
     Ok(())
 }
 
-/// Application view
+/// A single frame of application view
 fn app_view(frame: &mut TerminalFrame, app: &App) {
     let main_chunks = widget::main_chunks(frame.size());
 
@@ -72,21 +73,4 @@ fn app_view(frame: &mut TerminalFrame, app: &App) {
 
     let navigation_hint = widget::navigation_hint(app);
     frame.render_widget(navigation_hint, main_chunks[2]);
-}
-
-/// Handle cursor when typing
-fn handle_input_cursor(app: &App, frame: &mut TerminalFrame, chunks: &[Rect]) {
-    match app.input_mode {
-        // Hide the cursor. `Frame` does this by default, so we don't need to do anything here
-        InputMode::Normal => (),
-        InputMode::Adding => {
-            // Make the cursor visible and ask tui-rs to put it at the specified coordinates after rendering
-            frame.set_cursor(
-                // Put cursor past the end of the input text
-                chunks[1].x + app.input.len() as u16 + 1,
-                // Move one line down, from the border to the input line
-                chunks[1].y + 1,
-            )
-        }
-    }
 }

@@ -1,3 +1,5 @@
+//! Actions to do after a specific event occurs
+
 use crate::{App, InputMode, Quest};
 
 pub fn new_quest(app: &mut App) {
