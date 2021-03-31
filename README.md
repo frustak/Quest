@@ -23,6 +23,41 @@ Clone the project then:
 ## Usage
 after installing with cargo, you can run the command `quest-tui`
 
+## Configuration
+Quest uses [directories-next](https://crates.io/crates/directories-next) to save configuration and data files,
+config directory:
+- Linux:   `$XDG_CONFIG_HOME/quest or $HOME/.config/quest`
+- Windows: `{FOLDERID_RoamingAppData}/quest/config`
+- macOS:   `$HOME/Library/Application Support/quest`
+A config file is created if one does not exists already when you run the app.
+default configs:
+```json
+{
+    "colors": {
+      "foreground": "White",
+      "background": "Black",
+      "selection_fg": "Black",
+      "selection_bg": "Yellow",
+      "check_sign": "Green"
+    },
+    "keybindings": {
+      "exit_app": {
+        "Char": "q"
+      },
+      "new_quest": {
+        "Char": "n"
+      },
+      "check_and_uncheck_quest": "Enter",
+      "list_up": "Up",
+      "list_down": "Down",
+      "delete_quest": "Delete",
+      "exit_adding": "Esc",
+      "save_quest": "Enter"
+    }
+}
+```
+You can refer to [Color](https://docs.rs/tui/0.6.0/tui/style/enum.Color.html) and [Keybinding](https://docs.rs/crossterm/0.17.7/crossterm/event/enum.KeyCode.html) for all possible configs.
+
 ## Contributing
 Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are greatly appreciated.
 [guide](https://github.com/frustak/Quest/blob/main/CONTRIBUTING.md)
@@ -36,19 +71,5 @@ Contributions are what make the open source community such an amazing place to b
 ## License
 Distributed under the MIT License. See [LICENSE](https://github.com/frustak/Quest/blob/main/LICENSE) for more information.
 
-## Lines of Code
-```
---------------------------------------------------------------------------------
- Language             Files        Lines        Blank      Comment         Code
---------------------------------------------------------------------------------
- Rust                     5          388           45           32          311
- Markdown                 1           22            4            0           18
- Toml                     1           13            2            1           10
---------------------------------------------------------------------------------
- Total                    7          423           51           33          339
---------------------------------------------------------------------------------
-```
-
 ## Contact
 - Discord: frustαk#4859 (preferred)
-- Email: soulburn007@gmail.com
