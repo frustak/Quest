@@ -3,13 +3,13 @@ use serde::{Deserialize, Serialize};
 use tui::style::Color;
 
 /// Application configs
-#[derive(Serialize, Deserialize, Default)]
+#[derive(Serialize, Deserialize, Default, Debug)]
 pub struct Configs {
     pub colors: Colors,
     pub keybindings: KeyBindings,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Colors {
     pub foreground: Color,
     pub background: Color,
@@ -30,7 +30,7 @@ impl Default for Colors {
     }
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct KeyBindings {
     pub exit_app: KeyCode,
     pub new_quest: KeyCode,
@@ -55,4 +55,39 @@ impl Default for KeyBindings {
             save_quest: KeyCode::Enter,
         }
     }
+}
+
+/// Converts a `KeyCode` to `String`
+pub fn keycode_to_string(keycode: KeyCode) -> String {
+    let temp;
+
+    let stringified = match keycode {
+        KeyCode::Backspace => "Backspace",
+        KeyCode::Enter => "Enter",
+        KeyCode::Left => "←",
+        KeyCode::Right => "→",
+        KeyCode::Up => "↑",
+        KeyCode::Down => "↓",
+        KeyCode::Home => "Home",
+        KeyCode::End => "End",
+        KeyCode::PageUp => "Page Up",
+        KeyCode::PageDown => "Page Down",
+        KeyCode::Tab => "Tab",
+        KeyCode::BackTab => "Back Tab",
+        KeyCode::Delete => "Delete",
+        KeyCode::Insert => "Insert",
+        KeyCode::F(n) => {
+            temp = format!("F{}", n);
+            temp.as_str()
+        }
+        KeyCode::Char(char) => {
+            temp = char.to_string();
+            temp.as_str()
+        }
+        KeyCode::Null => "Null",
+        KeyCode::Esc => "Esc",
+    }
+    .to_string();
+
+    stringified
 }
