@@ -56,6 +56,31 @@ default configs:
     }
 }
 ```
+## Example keybindings
+### Vi
+```json
+  "keybindings": {
+    "exit_app": {
+      "Char": "z"
+    },
+    "new_quest": {
+      "Char": "n"
+    },
+    "check_and_uncheck_quest": {
+      "Char": "c"
+    },
+    "list_up": {
+      "Char": "k"
+    },
+    "list_down": {
+      "Char": "j"
+    },
+    "delete_quest": {
+      "Char": "x"
+    },
+    "exit_adding": "Esc",
+    "save_quest": "Enter"
+```
 You can refer to [Color](https://docs.rs/tui/0.6.0/tui/style/enum.Color.html) and [Keybinding](https://docs.rs/crossterm/0.17.7/crossterm/event/enum.KeyCode.html) for all possible configs.
 
 ## Contributing
