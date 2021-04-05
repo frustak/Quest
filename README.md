@@ -56,8 +56,11 @@ default configs:
     }
 }
 ```
-## Example keybindings
-### Vi
+You can refer to [Color](https://docs.rs/tui/0.6.0/tui/style/enum.Color.html) and [Keybinding](https://docs.rs/crossterm/0.17.7/crossterm/event/enum.KeyCode.html) for all possible configs.
+
+### Example keybindings
+
+#### Vi
 ```json
   "keybindings": {
     "exit_app": {
@@ -81,7 +84,6 @@ default configs:
     "exit_adding": "Esc",
     "save_quest": "Enter"
 ```
-You can refer to [Color](https://docs.rs/tui/0.6.0/tui/style/enum.Color.html) and [Keybinding](https://docs.rs/crossterm/0.17.7/crossterm/event/enum.KeyCode.html) for all possible configs.
 
 ## Contributing
 Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are greatly appreciated.
