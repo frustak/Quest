@@ -97,6 +97,3 @@ Contributions are what make the open source community such an amazing place to b
 
 ## License
 Distributed under the MIT License. See [LICENSE](https://github.com/frustak/Quest/blob/main/LICENSE) for more information.
-
-## Contact
-- Discord: frustαk#4859 (preferred)
