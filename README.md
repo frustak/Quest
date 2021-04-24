@@ -30,6 +30,7 @@ config directory:
 - Windows: `{FOLDERID_RoamingAppData}/quest/config`
 - macOS:   `$HOME/Library/Application Support/quest`
 A config file is created if one does not exists already when you run the app.
+
 default configs:
 ```json
 {
